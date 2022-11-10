@@ -1,0 +1,50 @@
+﻿@using DndApp.Data;
+<h3>CharacterCreater</h3>
+
+<EditForm Model="@UciEdit" OnValidSubmit="@(() => AddNewCharacter())">
+<div class="row">
+    <div class="col-md-6 col-sm-12  mx-auto mb-5">
+        <div class="mb-3 row ">
+            <div class="col-sm-4 text-sm-end align-self-center">
+                <label class="form-label p-0">Character Name</label>
+            </div>
+            <div class="col col-lg-6">
+                <InputText class="form-control" @bind-Value="UciEdit.Name" />
+            </div>
+        </div>
+              <div class="mb-3 row ">
+            <div class="col-sm-4 text-sm-end align-self-center">
+                <label class="form-label p-0">Charisma</label>
+            </div>
+            <div class="col col-lg-6">
+                <InputNumber class="form-control" @bind-Value="UciEdit.Charisma" />
+            </div>
+        </div>
+              <div class="mb-3 row ">
+            <div class="col-sm-4 text-sm-end align-self-center">
+                <label class="form-label p-0">Intelligence</label>
+            </div>
+            <div class="col col-lg-6">
+                <InputNumber class="form-control" @bind-Value="UciEdit.Intelligence" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4 text-sm-end align-self-center">
+            </div>
+            <div class="col-8">
+                <button type="submit" class="btn btn-outline-primary">Make</button>
+            </div>
+        </div>
+    </div>
+</div>
+</EditForm>
+
+@code {
+    public UserCharacterInfo UciEdit = new();
+    public async Task AddNewCharacter()
+    {
+        // calls the service to add the character to the database    
+        
+    }
+
+}
