@@ -18,18 +18,12 @@
     
     [Inject]
     public HttpClient httpClient { get; set; }
-
-
     public ApiClasses.Rootobject myJson { get; set; }
-
     public ApiClasses.Result[] mySpells { get; set; }
-
-
     protected override async Task OnInitializedAsync()
     {
         myJson = await JsonSerializer.DeserializeAsync<ApiClasses.Rootobject>
         (await httpClient.GetStreamAsync($"https://www.dnd5eapi.co/api/spells"));
         mySpells = myJson.results;
     }
-    
 }
