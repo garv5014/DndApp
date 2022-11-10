@@ -1,0 +1,33 @@
+﻿@page "/classes"
+@using DndApp.Data
+@using DndApp.Services
+@inject JsonService jservice;
+<h3>CharClass</h3>
+@if (myClasses != null)
+{
+    @foreach (ApiClasses.Result spell in myClasses)
+    {
+
+        <a href="/classes/@spell.index">
+            <p>@spell.name</p>
+        </a>
+    }
+
+}
+
+@code {
+    [Inject]
+    public HttpClient httpClient { get; set; }
+
+
+    public ApiClasses.Rootobject myJson { get; set; }
+
+    public ApiClasses.Result[] myClasses { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        myJson = await jservice.ListItem("classes");
+        myClasses = myJson.results;
+    }
+}

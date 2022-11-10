@@ -1,19 +1,18 @@
-﻿@page "/spell"
+﻿@page "/races"
 @using System.Text.Json;
 @using System.Text.Json.Serialization;
 @using DndApp.Data;
 @using DndApp.Services;
 @inject JsonService jservice;
-
-<h3>Spells</h3>
-@if(mySpells != null)
+<h3>Races</h3>
+@if (myRaces != null)
 {
-    @foreach (var spell in mySpells)
+    @foreach (ApiClasses.Result spell in myRaces)
     {
 
         <a href="/spell/@spell.index">
             <p>@spell.name</p>
-        </a> 
+        </a>
     }
 
 }
@@ -26,13 +25,13 @@
 
     public ApiClasses.Rootobject myJson { get; set; }
 
-    public ApiClasses.Result[] mySpells { get; set; }
+    public ApiClasses.Result[] myRaces { get; set; }
 
 
     protected override async Task OnInitializedAsync()
     {
-        myJson = await jservice.ListItem("spells");
-        mySpells = myJson.results;
+        myJson = await jservice.ListItem("races");
+        myRaces = myJson.results;
     }
-    
+
 }

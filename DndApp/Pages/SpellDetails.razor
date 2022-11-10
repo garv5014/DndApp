@@ -2,6 +2,9 @@
 @using System.Text.Json;
 @using System.Text.Json.Serialization;
 @using DndApp.Data;
+@using DndApp.Services
+@inject JsonService jservice;
+
 @if(@mySpell != null){
 <h3>Spell Details</h3>
 
@@ -34,16 +37,16 @@
     if (mySpell.damage != null)
     {
         <p>Damage Type: @mySpell.damage.damage_type.name</p<!--Add code to link this to the damage type page?-->
-<p>Damage at levels:</p>
-<p>2: @mySpell.damage.damage_at_slot_level._2</p>
-<p>3: @mySpell.damage.damage_at_slot_level._3</p>
-<p>4: @mySpell.damage.damage_at_slot_level._4</p>
-<p>5: @mySpell.damage.damage_at_slot_level._5</p>
-<p>6: @mySpell.damage.damage_at_slot_level._6</p>
-<p>7: @mySpell.damage.damage_at_slot_level._7</p>
-<p>8: @mySpell.damage.damage_at_slot_level._8</p>
-<p>9: @mySpell.damage.damage_at_slot_level._9</p>
-}
+        <p>Damage at levels:</p>
+        <p>2: @mySpell.damage.damage_at_slot_level._2</p>
+        <p>3: @mySpell.damage.damage_at_slot_level._3</p>
+        <p>4: @mySpell.damage.damage_at_slot_level._4</p>
+        <p>5: @mySpell.damage.damage_at_slot_level._5</p>
+        <p>6: @mySpell.damage.damage_at_slot_level._6</p>
+        <p>7: @mySpell.damage.damage_at_slot_level._7</p>
+        <p>8: @mySpell.damage.damage_at_slot_level._8</p>
+        <p>9: @mySpell.damage.damage_at_slot_level._9</p>
+    }
 <p>School of Magic: @mySpell.school.name</p><!--Add code to link this to the school page-->
 <p>Classes that can cast:</p>
 @foreach(Spell.Class1 data in @mySpell.classes)
@@ -63,17 +66,10 @@
 
     //get only spell data
     //build spell class
-
-    [Inject]
-    public HttpClient httpClient { get; set; }
-
-    public Spell.Damage_At_Slot_Level damage { get; set; }
-
     public Spell.Rootobject mySpell { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        mySpell = await JsonSerializer.DeserializeAsync<Spell.Rootobject>
-         (await httpClient.GetStreamAsync($"https://www.dnd5eapi.co/api/spells/{spellindex}"));
+        mySpell = await jservice.Spell(spellindex);
     }
 }

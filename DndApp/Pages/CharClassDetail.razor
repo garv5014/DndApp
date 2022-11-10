@@ -1,0 +1,21 @@
+﻿@page "/classes/{classindex}"
+@using DndApp.Data;
+@using DndApp.Services;
+@inject JsonService jservice;
+<h3>CharClassDetail</h3>
+
+@code {
+    [Parameter]
+    public string classindex { get; set; }
+
+
+    [Inject]
+    public HttpClient httpClient { get; set; }
+
+    public CharacterClass.Rootobject mySpell { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        mySpell = await jservice.CharClass(classindex);
+    }
+}

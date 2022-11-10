@@ -13,6 +13,7 @@ namespace DndApp.Data
         public string Class { get; set; }
         [Required]
         public string Race { get; set; }
+        [Range(0,9999)]
         public int? Age { get; set; }
         [Required, Range(3,18)]
         public int Charisma { get; set; }

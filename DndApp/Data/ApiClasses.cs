@@ -22,163 +22,6 @@ namespace DndApp.Data
 
     }
 
-    public class Monster
-    {
-
-        public class Rootobject
-        {
-            public string index { get; set; }
-            public string name { get; set; }
-            public string size { get; set; }
-            public string type { get; set; }
-            public string alignment { get; set; }
-            public int armor_class { get; set; }
-            public int hit_points { get; set; }
-            public string hit_dice { get; set; }
-            public string hit_points_roll { get; set; }
-            public Speed speed { get; set; }
-            public int strength { get; set; }
-            public int dexterity { get; set; }
-            public int constitution { get; set; }
-            public int intelligence { get; set; }
-            public int wisdom { get; set; }
-            public int charisma { get; set; }
-            public Proficiency[] proficiencies { get; set; }
-            public object[] damage_vulnerabilities { get; set; }
-            public object[] damage_resistances { get; set; }
-            public object[] damage_immunities { get; set; }
-            public object[] condition_immunities { get; set; }
-            public Senses senses { get; set; }
-            public string languages { get; set; }
-            public int challenge_rating { get; set; }
-            public int xp { get; set; }
-            public Special_Abilities[] special_abilities { get; set; }
-            public Action[] actions { get; set; }
-            public Legendary_Actions[] legendary_actions { get; set; }
-            public string url { get; set; }
-        }
-
-        public class Speed
-        {
-            public string walk { get; set; }
-            public string swim { get; set; }
-        }
-
-        public class Senses
-        {
-            public string darkvision { get; set; }
-            public int passive_perception { get; set; }
-        }
-
-        public class Proficiency
-        {
-            public int value { get; set; }
-            public Proficiency1 proficiency { get; set; }
-        }
-
-        public class Proficiency1
-        {
-            public string index { get; set; }
-            public string name { get; set; }
-            public string url { get; set; }
-        }
-
-        public class Special_Abilities
-        {
-            public string name { get; set; }
-            public string desc { get; set; }
-            public Dc dc { get; set; }
-        }
-
-        public class Dc
-        {
-            public Dc_Type dc_type { get; set; }
-            public int dc_value { get; set; }
-            public string success_type { get; set; }
-        }
-
-        public class Dc_Type
-        {
-            public string index { get; set; }
-            public string name { get; set; }
-            public string url { get; set; }
-        }
-
-        public class Action
-        {
-            public string name { get; set; }
-            public string multiattack_type { get; set; }
-            public string desc { get; set; }
-            public Action1[] actions { get; set; }
-            public int attack_bonus { get; set; }
-            public Dc1 dc { get; set; }
-            public Damage[] damage { get; set; }
-            public Usage usage { get; set; }
-        }
-
-        public class Dc1
-        {
-            public Dc_Type1 dc_type { get; set; }
-            public int dc_value { get; set; }
-            public string success_type { get; set; }
-        }
-
-        public class Dc_Type1
-        {
-            public string index { get; set; }
-            public string name { get; set; }
-            public string url { get; set; }
-        }
-
-        public class Usage
-        {
-            public string type { get; set; }
-            public int times { get; set; }
-        }
-
-        public class Action1
-        {
-            public string action_name { get; set; }
-            public int count { get; set; }
-            public string type { get; set; }
-        }
-
-        public class Damage
-        {
-            public Damage_Type damage_type { get; set; }
-            public string damage_dice { get; set; }
-        }
-
-        public class Damage_Type
-        {
-            public string index { get; set; }
-            public string name { get; set; }
-            public string url { get; set; }
-        }
-
-        public class Legendary_Actions
-        {
-            public string name { get; set; }
-            public string desc { get; set; }
-            public int attack_bonus { get; set; }
-            public Damage1[] damage { get; set; }
-        }
-
-        public class Damage1
-        {
-            public Damage_Type1 damage_type { get; set; }
-            public string damage_dice { get; set; }
-        }
-
-        public class Damage_Type1
-        {
-            public string index { get; set; }
-            public string name { get; set; }
-            public string url { get; set; }
-        }
-
-    }
-
     public class Spell
     {
 
@@ -470,6 +313,98 @@ namespace DndApp.Data
         }
 
         public class Subclass
+        {
+            public string index { get; set; }
+            public string name { get; set; }
+            public string url { get; set; }
+        }
+
+    }
+
+    public class Races
+    {
+
+        public class Rootobject
+        {
+            public string index { get; set; }
+            public string name { get; set; }
+            public int speed { get; set; }
+            public Ability_Bonuses[] ability_bonuses { get; set; }
+            public string alignment { get; set; }
+            public string age { get; set; }
+            public string size { get; set; }
+            public string size_description { get; set; }
+            public Starting_Proficiencies[] starting_proficiencies { get; set; }
+            public Starting_Proficiency_Options starting_proficiency_options { get; set; }
+            public Language[] languages { get; set; }
+            public string language_desc { get; set; }
+            public Trait[] traits { get; set; }
+            public Subrace[] subraces { get; set; }
+            public string url { get; set; }
+        }
+
+        public class Starting_Proficiency_Options
+        {
+            public string desc { get; set; }
+            public int choose { get; set; }
+            public string type { get; set; }
+            public From from { get; set; }
+        }
+
+        public class From
+        {
+            public string option_set_type { get; set; }
+            public Option[] options { get; set; }
+        }
+
+        public class Option
+        {
+            public string option_type { get; set; }
+            public Item item { get; set; }
+        }
+
+        public class Item
+        {
+            public string index { get; set; }
+            public string name { get; set; }
+            public string url { get; set; }
+        }
+
+        public class Ability_Bonuses
+        {
+            public Ability_Score ability_score { get; set; }
+            public int bonus { get; set; }
+        }
+
+        public class Ability_Score
+        {
+            public string index { get; set; }
+            public string name { get; set; }
+            public string url { get; set; }
+        }
+
+        public class Starting_Proficiencies
+        {
+            public string index { get; set; }
+            public string name { get; set; }
+            public string url { get; set; }
+        }
+
+        public class Language
+        {
+            public string index { get; set; }
+            public string name { get; set; }
+            public string url { get; set; }
+        }
+
+        public class Trait
+        {
+            public string index { get; set; }
+            public string name { get; set; }
+            public string url { get; set; }
+        }
+
+        public class Subrace
         {
             public string index { get; set; }
             public string name { get; set; }
