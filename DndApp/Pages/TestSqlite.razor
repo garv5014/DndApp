@@ -1,0 +1,34 @@
+﻿@page "/TestSqlite"
+@using Microsoft.Data.Sqlite;
+@using Microsoft.EntityFrameworkCore;
+<h3>TestSqlite</h3>
+
+<button @onclick="RunEfCore">Run Ef Core</button>
+
+@code {
+    private async Task RunEfCore()
+    {
+        var connectionStringBuilder = new SqliteConnectionStringBuilder { DataSource = ":memory:" };
+        var connection = new SqliteConnection(connectionStringBuilder.ToString());
+
+        var options = new DbContextOptionsBuilder<DNDDbContext>()
+            .UseSqlite(connection)
+            .Options;
+
+        using var db = new DNDDbContext(options);
+        db.Database.OpenConnection();
+        await db.Database.EnsureCreatedAsync();
+        var nextId = db.Names!.Count() + 1;
+        db.Names.Add(new Name { Id = nextId, FullName = "Abdul Rahman" });
+        await db.SaveChangesAsync();
+
+        Console.WriteLine();
+        await foreach (var name in db.Names.AsAsyncEnumerable())
+        {
+            Console.WriteLine(name.FullName);
+        }
+        db.Database.CloseConnection();
+
+        
+    }
+}

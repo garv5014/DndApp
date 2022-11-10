@@ -12,5 +12,20 @@ public class DNDDbContext : DbContext
     {
 
     }
-    DbSet<UserCharacterInfo> userCharacterInfos;
+    public DbSet<UserCharacterInfo> UserCharacterInfo { get; set; }
+
+    public DbSet<Name> Names { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder options)
+    {
+        options.LogTo(Console.WriteLine, LogLevel.Warning)
+                .EnableDetailedErrors()
+                .EnableSensitiveDataLogging(true);
+    }
+}
+
+public class Name
+{
+    public int Id { get; set; }
+    public string FullName { get; set; }
 }

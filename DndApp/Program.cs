@@ -1,7 +1,8 @@
+using DndApp;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using DndApp;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -20,3 +21,12 @@ builder.Services.AddMsalAuthentication(options =>
     options.ProviderOptions.LoginMode = "Redirect";
 });
 await builder.Build().RunAsync();
+
+public partial class Program
+{
+    /// <summary>
+    /// FIXME: This is required for EF Core 6.0 as it is not compatible with trimming.
+    /// </summary>
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+    private static Type _keepDateOnly = typeof(DateOnly);
+}
