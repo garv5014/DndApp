@@ -1,6 +1,9 @@
 ﻿@page "/CharacterCreator"
 @using DndApp.Data;
 @using System.Text.Json;
+@if(!CharacterMade)
+{
+
 <h3 class="text-center">Character Creator</h3>
 
 <EditForm Model="@UciEdit" OnValidSubmit="@(() => AddNewCharacter())">
@@ -113,11 +116,18 @@
     </div>
 </div>
 </EditForm>
+}
+else if (UciSubmit != null) 
+{
+    <UserCharacter characterInfo="@UciSubmit"/>
+}
 
 @code {
+    public bool CharacterMade { get; set; } = false;
     public ApiClasses.Result[] Classes { get; set; } 
     public ApiClasses.Result[] Races { get; set; }
     public UserCharacterInfo UciEdit = new();
+    public UserCharacterInfo UciSubmit = new();
     public ApiClasses.Rootobject myJson { get; set; }
     [Inject]
     public HttpClient http { get; set; }
@@ -132,10 +142,12 @@
         Races = myJson.results;
 
     }
-    public async Task AddNewCharacter()
+    public void AddNewCharacter()
     {
-        // calls the service to add the character to the database    
-        
+        // calls the service to add the character to the database 
+        CharacterMade = true;
+        UciSubmit = UciEdit;
+        StateHasChanged();
     }
 
 }

@@ -1,0 +1,27 @@
+﻿@page "/CustomCharacter"
+@using DndApp.Data;
+@using DndApp.Services;
+@inject JsonService jservice;
+<h1 class="text-center "> @cStats.Name</h1>
+<div class="text-center row"> 
+ <div class="card p-0"> 
+     <div class="card-header my-0 px-0">
+         <h4> Initiative </h4>
+     </div>
+    <div class="card-body">
+        <p>@cStats.initiative_Mod</p>
+    </div>
+ </div>
+
+</div>
+
+@code {
+    [Parameter]
+    public UserCharacterInfo? characterInfo { get; set; }
+    public CharacterStats cStats { get; set; }
+    protected override Task OnInitializedAsync()
+    {
+        cStats = new(characterInfo);
+        return base.OnInitializedAsync();
+    }
+}
