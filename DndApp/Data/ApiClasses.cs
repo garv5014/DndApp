@@ -427,24 +427,4 @@ namespace DndApp.Data
 
 
 
-public class Rootobject
-{
-    public string _id { get; set; }
-    public object[] higher_level { get; set; }
-    public string index { get; set; }
-    public string name { get; set; }
-    public string[] desc { get; set; }
-    public string range { get; set; }
-    public string[] components { get; set; }
-    public bool ritual { get; set; }
-    public string duration { get; set; }
-    public bool concentration { get; set; }
-    public string casting_time { get; set; }
-    public int level { get; set; }
-    public Damage damage { get; set; }
-    public Dc dc { get; set; }
-    public School school { get; set; }
-    public Class1[] classes { get; set; }
-    public Subclass[] subclasses { get; set; }
-    public string url { get; set; }
-}
+

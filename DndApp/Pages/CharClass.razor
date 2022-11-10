@@ -5,11 +5,11 @@
 <h3>CharClass</h3>
 @if (myClasses != null)
 {
-    @foreach (ApiClasses.Result spell in myClasses)
+    @foreach (var Class in myClasses)
     {
 
-        <a href="/classes/@spell.index">
-            <p>@spell.name</p>
+        <a href="/classes/@Class.index">
+            <p>@Class.name</p>
         </a>
     }
 
