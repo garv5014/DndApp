@@ -9,8 +9,9 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
 builder.Services.AddDbContextFactory<DNDDbContext>(options =>
-    options.UseSqlite("Data Source = DND.db")
+    options.UseSqlite("data source=DND.db")
     .EnableSensitiveDataLogging());
 
 builder.Services.AddMsalAuthentication(options =>
