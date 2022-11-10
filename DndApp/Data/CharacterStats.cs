@@ -4,6 +4,7 @@
     {
         public CharacterStats(UserCharacterInfo characterInfo)
         {
+            this.Class = characterInfo.Class;
             this.Name = characterInfo.Name;
             this.Age= characterInfo.Age;
             this.Intelligence= characterInfo.Intelligence;
@@ -34,7 +35,7 @@
 
         private int calculateModifier(int num)
         {
-            return (num - 10) * 2;
+            return (num - 10) / 2;
         }
     }
 }
