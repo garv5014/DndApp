@@ -1,0 +1,62 @@
+﻿@page "/YourCharacters"
+@attribute [Authorize]
+@using DndApp.Components
+@using DndApp.Data;
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.EntityFrameworkCore;
+@using SqliteWasmHelper;
+@using DndApp.Services;
+@inject ISqliteWasmDbContextFactory<DNDDbContext> contextFactory
+@inject AuthenticationStateProvider authStateProvider
+<div class="text-center">
+
+    @if (Characters != null)
+    {
+        <h3>Here Are Your Characters</h3>
+        @foreach (var character in Characters)
+        {
+            <div class="row"> 
+                <div class="card col-lg-3">
+                    <a @onclick="() => ShowCharacterPage(character)">
+                        <div class=" card-body">
+                            <p> @character.Name </p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        }
+    }
+    else if (ShowCharacter)
+    {
+        <UserCharacter characterInfo="DisplayedCharacter" />
+    }
+    else
+    {
+        <h1> No Characters found.</h1>
+    }
+
+</div>
+
+@code {
+    public DNDDbContext ctx { get; set; }
+    public IEnumerable<UserCharacterInfo> Characters { get; set; }
+    public UserCharacterInfo DisplayedCharacter { get; set; }
+    public bool ShowCharacter { get; set; }
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var context = await authStateProvider.GetAuthenticationStateAsync();
+        var userid = context.User.FindFirst(u => u.Type.Contains("sub"))?.Value;
+        ctx = await contextFactory.CreateDbContextAsync();
+        Characters = ctx.UserCharacterInfos.Where(a => a.UserId == userid);
+    }
+
+    public async Task ShowCharacterPage(UserCharacterInfo character)
+    {
+        DisplayedCharacter = character;
+        ShowCharacter = false;
+        StateHasChanged();
+    }
+}

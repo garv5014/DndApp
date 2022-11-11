@@ -1,7 +1,13 @@
 ﻿@page "/CharacterCreator"
+@attribute [Authorize]
 @using DndApp.Data;
 @using DndApp.Components;
 @using System.Text.Json;
+@using Microsoft.AspNetCore.Authorization;
+@using SqliteWasmHelper;
+@inject ISqliteWasmDbContextFactory<DNDDbContext> contextFactory
+@inject AuthenticationStateProvider authStateProvider
+
 @if(!CharacterMade)
 {
 
@@ -124,6 +130,8 @@ else if (UciSubmit != null)
 }
 
 @code {
+    public DNDDbContext ctx { get;set; }
+
     public bool CharacterMade { get; set; } = false;
     public ApiClasses.Result[] Classes { get; set; } 
     public ApiClasses.Result[] Races { get; set; }
@@ -141,14 +149,18 @@ else if (UciSubmit != null)
         myJson = await JsonSerializer.DeserializeAsync<ApiClasses.Rootobject>
         (await http.GetStreamAsync($"https://www.dnd5eapi.co/api/races"));
         Races = myJson.results;
-
+        ctx = await contextFactory.CreateDbContextAsync();
     }
 
-    public void AddNewCharacter()
+    public async void AddNewCharacter()
     {
         // calls the service to add the character to the database 
-        CharacterMade = true;
         UciSubmit = UciEdit;
+        var context = await authStateProvider.GetAuthenticationStateAsync();
+        var userid = context.User.FindFirst(u => u.Type.Contains("sub"))?.Value;
+        UciEdit.UserId = userid;
+        ctx.UserCharacterInfos.AddAsync(UciEdit);
+        CharacterMade = true;
         StateHasChanged();
     }
 
