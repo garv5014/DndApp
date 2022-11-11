@@ -40,10 +40,12 @@
     </table>
 }
 @code {
-
+   
     [Required, Range(1, 500)]
+    [Parameter]
     public int DieSides { get; set; }
     [Required, Range(1, 500)]
+    [Parameter]
     public int DieCount { get; set; }
 
     public long Ticks { get; set; }
