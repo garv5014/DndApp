@@ -1,5 +1,6 @@
 ﻿@page "/CharacterCreator"
 @using DndApp.Data;
+@using DndApp.Components;
 @using System.Text.Json;
 @if(!CharacterMade)
 {
@@ -142,6 +143,7 @@ else if (UciSubmit != null)
         Races = myJson.results;
 
     }
+
     public void AddNewCharacter()
     {
         // calls the service to add the character to the database 
