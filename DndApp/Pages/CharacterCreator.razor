@@ -141,7 +141,6 @@ else if (UciSubmit != null)
         myJson = await JsonSerializer.DeserializeAsync<ApiClasses.Rootobject>
         (await http.GetStreamAsync($"https://www.dnd5eapi.co/api/races"));
         Races = myJson.results;
-
     }
 
     public void AddNewCharacter()
@@ -149,7 +148,6 @@ else if (UciSubmit != null)
         // calls the service to add the character to the database 
         CharacterMade = true;
         UciSubmit = UciEdit;
-        StateHasChanged();
+        StateHasChanged();  
     }
-
 }
