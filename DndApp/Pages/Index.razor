@@ -8,7 +8,6 @@
 
 <h1>Hello, world!</h1>
 
-<button @onclick=addCharacterAsync>Add Character</button>
 
 @if(characterInfo != null)
 {
@@ -24,7 +23,6 @@
     protected override async Task OnInitializedAsync()
     {
         ctx = await contextFactory.CreateDbContextAsync();
-        await addCharacterAsync();
     }
 
     async Task addCharacterAsync()

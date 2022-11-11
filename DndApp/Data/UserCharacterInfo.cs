@@ -27,5 +27,6 @@ namespace DndApp.Data
         public int Constitution { get; set; }
         [Required, Range(3, 18)]
         public int Wisdom { get; set; }
+        public string UserId { get; set; }
     }
 }
