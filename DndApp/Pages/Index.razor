@@ -1,9 +1,39 @@
 ﻿@page "/"
+@using DndApp.Data;
+@using Microsoft.EntityFrameworkCore;
+@using SqliteWasmHelper;
+@inject ISqliteWasmDbContextFactory<DNDDbContext> contextFactory
 
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
+<button @onclick=addCharacterAsync>Add Character</button>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@if(characterInfo != null)
+{
+   foreach(var character in characterInfo)
+    {
+        <p>@character.Name</p>
+    }
+}
+
+@code {
+    DNDDbContext ctx;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ctx = await contextFactory.CreateDbContextAsync();
+        await addCharacterAsync();
+    }
+
+    async Task addCharacterAsync()
+    {
+        ctx.UserCharacterInfos.Add(new UserCharacterInfo { Name = "Test", Class = "Back-End" });
+        await ctx.SaveChangesAsync();
+
+        characterInfo = await ctx.UserCharacterInfos.ToListAsync();
+    }
+
+    IEnumerable<UserCharacterInfo> characterInfo;
+}
