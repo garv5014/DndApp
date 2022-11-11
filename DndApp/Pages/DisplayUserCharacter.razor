@@ -10,36 +10,33 @@
 @inject AuthenticationStateProvider authStateProvider
 <div class="text-center">
 
-    @if (Characters != null)
+    @if (Characters.Any() && !ShowCharacter)
     {
         <h3>Here Are Your Characters</h3>
+        <div class="row"> 
         @foreach (var character in Characters)
         {
-            <div class="row"> 
                 <div class="card col-lg-3">
-                    <a @onclick="() => ShowCharacterPage(character)">
                         <div class=" card-body">
-                            <p> @character.Name </p>
+                        <button class="btn" @onclick="@(() => ShowCharacterPage(character))">
+                                @character.Name
+                        </button>
                         </div>
-                    </a>
                 </div>
-            </div>
         }
-    }
-    else if (ShowCharacter)
-    {
-        <UserCharacter characterInfo="DisplayedCharacter" />
-    }
-    else
+        </div>
+    }else if(!ShowCharacter)
     {
         <h1> No Characters found.</h1>
+    }else {
+        <UserCharacter characterInfo="DisplayedCharacter" />
     }
 
 </div>
 
 @code {
     public DNDDbContext ctx { get; set; }
-    public IEnumerable<UserCharacterInfo> Characters { get; set; }
+    public List<UserCharacterInfo> Characters { get; set; }
     public UserCharacterInfo DisplayedCharacter { get; set; }
     public bool ShowCharacter { get; set; }
 
@@ -50,13 +47,13 @@
         var context = await authStateProvider.GetAuthenticationStateAsync();
         var userid = context.User.FindFirst(u => u.Type.Contains("sub"))?.Value;
         ctx = await contextFactory.CreateDbContextAsync();
-        Characters = ctx.UserCharacterInfos.Where(a => a.UserId == userid);
+        Characters = await  ctx.UserCharacterInfos.Where(a => a.UserId == userid).ToListAsync();
     }
 
     public async Task ShowCharacterPage(UserCharacterInfo character)
     {
         DisplayedCharacter = character;
-        ShowCharacter = false;
+        ShowCharacter = true;
         StateHasChanged();
     }
 }

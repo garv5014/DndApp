@@ -5,7 +5,7 @@ VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DndApp", "DndApp\DndApp.csproj", "{44CD6983-9134-4D6D-9E6C-558DF3961D43}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DnDTest", "DnDTest\DnDTest.csproj", "{0292D9BE-9E71-4185-AD15-15449077F51E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnDTest", "DnDTest\DnDTest.csproj", "{0292D9BE-9E71-4185-AD15-15449077F51E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
