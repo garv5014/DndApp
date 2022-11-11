@@ -12,5 +12,5 @@ public class DNDDbContext : DbContext
     {
 
     }
-    DbSet<UserCharacterInfo> userCharacterInfos;
+    public DbSet<UserCharacterInfo> UserCharacterInfos { get; set; }
 }
