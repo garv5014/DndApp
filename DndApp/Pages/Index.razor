@@ -29,7 +29,18 @@
 
     async Task addCharacterAsync()
     {
-        ctx.UserCharacterInfos.Add(new UserCharacterInfo { Name = "Test", Class = "Back-End" });
+        ctx.UserCharacterInfos.Add(new UserCharacterInfo
+            {
+                Name = "Test",
+                Class = "Back-End",
+                Charisma = 5,
+                Constitution = 6,
+                Dexterity = 7,
+                Intelligence = 8,
+                Race = "Race",
+                Strength = 9,
+                Wisdom = 10
+            });
         await ctx.SaveChangesAsync();
 
         characterInfo = await ctx.UserCharacterInfos.ToListAsync();

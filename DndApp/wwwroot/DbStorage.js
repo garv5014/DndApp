@@ -12,18 +12,5 @@
                 res();
             };
         };
-
-        let lastModifiedTime = new Date();
-        setInterval(() => {
-            const path = `/${filename}`;
-            if (FS.analyzePath(path).exists) {
-                const mtime = FS.stat(path).mtime;
-                if (mtime.valueOf() !== lastModifiedTime.valueOf()) {
-                    lastModifiedTime = mtime;
-                    const data = FS.readFile(path);
-                    db.result.transaction('Files', 'readwrite').objectStore('Files').put(data, 'file');
-                }
-            }
-        }, 1000);
     });
 }

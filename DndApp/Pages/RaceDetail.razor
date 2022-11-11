@@ -1,0 +1,19 @@
+﻿@page "/races/{raceindex}"
+@using System.Text.Json;
+@using System.Text.Json.Serialization;
+@using DndApp.Data;
+@using DndApp.Services;
+@inject JsonService jservice;
+<h3>RaceDetail</h3>
+<p>@myRace.name</p>
+@code {
+    [Parameter]
+    public string raceindex { get; set; }
+
+    public Races.Rootobject myRace { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        myRace = await jservice.Race(raceindex);
+    }
+}

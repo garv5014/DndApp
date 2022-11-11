@@ -1,0 +1,65 @@
+﻿@using DndApp.Data;
+@using DndApp.Components;
+@using DndApp.Services;
+@inject JsonService jservice;
+<div class="row">
+    <h1 class="col text-center">@cStats.Name The @cStats.Class.ToUpper() </h1>
+</div>
+<div class="text-center row"> 
+    <div class="card col p-0">
+        <div class="card-header my-0 px-0">
+            <h3> Initiative </h3>
+        </div>
+        <div class="card-body">
+            <p class="h3">@cStats.initiative_Mod</p>
+        </div>
+    </div>
+ <div class="card col p-0"> 
+     <div class="card-header my-0 px-0">
+         <h3 class="text-danger"> Hp </h3>
+     </div>
+    <div class="card-body">
+            <p class="h3">@cStats.hp</p>
+    </div>
+ </div>
+    <div class="card col p-0">
+        <div class="card-header my-0 px-0">
+            <h3> Speed </h3>
+        </div>
+        <div class="card-body">
+            <p class="h3">@cStats.speed</p>
+        </div>
+    </div>
+    <div class="card col p-0">
+        <div class="card-header my-0 px-0">
+            <h3> Armor Class </h3>
+        </div>
+        <div class="card-body">
+            <p class="h3">@cStats.armor_Class</p>
+        </div>
+    </div>
+</div>
+<div class="text-center row">
+    <StatCard Name="Dexterity" Mod="cStats.dexterity_Mod" Score="cStats.Dexterity" />
+    <StatCard Name="Strength" Mod="cStats.strength_Mod" Score="cStats.Strength" />
+    <StatCard Name="Wisdom" Mod="cStats.wisdom_Mod" Score="cStats.Wisdom"/>
+</div>
+<div class=" text-center row">
+    <StatCard Name="Intelligence" Mod="cStats.intelligence_Mod" Score="cStats.Intelligence" />
+    <StatCard Name="Constitution" Mod="cStats.constitution_Mod" Score="cStats.Constitution" />
+    <StatCard Name="Charisma" Mod="cStats.charisma_Mod" Score="cStats.Charisma" />
+</div>
+
+@code {
+    [Parameter]
+    public UserCharacterInfo? characterInfo { get; set; }
+    public CharacterStats cStats { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        cStats = new(characterInfo);
+        var jsonClass = await jservice.CharClass(characterInfo.Class);
+        var jsonRace = await jservice.Race(characterInfo.Race);
+        cStats.hp = cStats.constitution_Mod + jsonClass.hit_die;
+        cStats.speed = (cStats.dexterity_Mod * 5) + jsonRace.speed;
+    }
+}

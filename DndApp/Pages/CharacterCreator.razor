@@ -1,33 +1,112 @@
-﻿@using DndApp.Data;
-<h3>CharacterCreater</h3>
+﻿@page "/CharacterCreator"
+@using DndApp.Data;
+@using DndApp.Components;
+@using System.Text.Json;
+@if(!CharacterMade)
+{
+
+<h3 class="text-center">Character Creator</h3>
 
 <EditForm Model="@UciEdit" OnValidSubmit="@(() => AddNewCharacter())">
-<div class="row">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+<div class="row text-md-center">
     <div class="col-md-6 col-sm-12  mx-auto mb-5">
         <div class="mb-3 row ">
-            <div class="col-sm-4 text-sm-end align-self-center">
+            <div class="col-sm-4  align-self-center">
                 <label class="form-label p-0">Character Name</label>
             </div>
             <div class="col col-lg-6">
                 <InputText class="form-control" @bind-Value="UciEdit.Name" />
             </div>
         </div>
-              <div class="mb-3 row ">
-            <div class="col-sm-4 text-sm-end align-self-center">
+        <div class="mb-3 row ">
+            <div class="col-lg-2 col-md-6  align-self-center">
                 <label class="form-label p-0">Charisma</label>
             </div>
-            <div class="col col-lg-6">
+                <div class="col-lg-2 col-md-6">
                 <InputNumber class="form-control" @bind-Value="UciEdit.Charisma" />
             </div>
+                <div class="col-lg-2 col-md-6 align-self-center">
+                    <label class="form-label p-0">Intelligence</label>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <InputNumber class="form-control" @bind-Value="UciEdit.Intelligence" />
+                </div>
+                <div class="col-lg-2 col-md-6  align-self-center">
+                    <label class="form-label p-0">Dexterity</label>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <InputNumber class="form-control" @bind-Value="UciEdit.Dexterity" />
+                </div>
         </div>
-              <div class="mb-3 row ">
-            <div class="col-sm-4 text-sm-end align-self-center">
-                <label class="form-label p-0">Intelligence</label>
+        <div class="mb-3 row ">
+                <div class="col-lg-2 col-md-6 align-self-center">
+                <label class="form-label p-0">Constitution</label>
             </div>
-            <div class="col col-lg-6">
-                <InputNumber class="form-control" @bind-Value="UciEdit.Intelligence" />
+                <div class="col-lg-2 col-md-6 ">
+                <InputNumber class="form-control" @bind-Value="UciEdit.Constitution" />
             </div>
+                <div class="col-lg-2 col-md-6  align-self-center">
+                    <label class="form-label p-0">Wisdom</label>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <InputNumber class="form-control" @bind-Value="UciEdit.Wisdom" />
+                </div>
+                <div class="col-lg-2 col-md-6  align-self-center">
+                    <label class="form-label p-0">Strength</label>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <InputNumber class="form-control" @bind-Value="UciEdit.Strength" />
+                </div>
         </div>
+            <div class="mb-3 row ">
+                <div class="col-lg-2 col-md-6 align-self-center">
+                    <label class="form-label p-0">Age</label>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <InputNumber class="form-control" @bind-Value="UciEdit.Age" />
+                </div>
+            @if (Classes != null)
+            {
+                    <div class="col-lg-1 col-md-6  align-self-center">
+                    <label class="form-label p-0">Class</label>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <select class="form-control" @bind="UciEdit.Class">
+                            @foreach (var Class in Classes)
+                            {
+                                <option value="@Class.index"> @Class.name </option>
+                            }
+
+                    </select>
+                </div>
+            }
+            @if (Races != null)
+            {
+                    
+                    <div class="col-lg-1  col-md-6 align-self-center">
+                    <label class="form-label p-0">Race</label>
+                </div>
+                    <div class="col-lg-3 col-md-6">
+                    <select class="form-control" @bind="UciEdit.Race">
+                        @foreach (var Race in Races)
+                        {
+                            <option value="@Race.index"> @Race.name </option>
+                        }
+
+                    </select>
+                </div>
+            }
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-4 text-sm-end align-self-center">
+                    <label class="form-label p-0">Your Back Story</label>
+                </div>
+                <div class="col-lg-6 ">
+                    <InputTextArea class="form-control" @bind-Value="UciEdit.Description" />
+                </div>
+            </div>
         <div class="row">
             <div class="col-sm-4 text-sm-end align-self-center">
             </div>
@@ -38,13 +117,39 @@
     </div>
 </div>
 </EditForm>
+}
+else if (UciSubmit != null) 
+{
+    <UserCharacter characterInfo="@UciSubmit"/>
+}
 
 @code {
+    public bool CharacterMade { get; set; } = false;
+    public ApiClasses.Result[] Classes { get; set; } 
+    public ApiClasses.Result[] Races { get; set; }
     public UserCharacterInfo UciEdit = new();
-    public async Task AddNewCharacter()
+    public UserCharacterInfo UciSubmit = new();
+    public ApiClasses.Rootobject myJson { get; set; }
+    [Inject]
+    public HttpClient http { get; set; }
+
+    protected override async Task OnInitializedAsync()
     {
-        // calls the service to add the character to the database    
-        
+        myJson   = await JsonSerializer.DeserializeAsync<ApiClasses.Rootobject>
+        (await http.GetStreamAsync($"https://www.dnd5eapi.co/api/classes"));
+        Classes = myJson.results;
+        myJson = await JsonSerializer.DeserializeAsync<ApiClasses.Rootobject>
+        (await http.GetStreamAsync($"https://www.dnd5eapi.co/api/races"));
+        Races = myJson.results;
+
+    }
+
+    public void AddNewCharacter()
+    {
+        // calls the service to add the character to the database 
+        CharacterMade = true;
+        UciSubmit = UciEdit;
+        StateHasChanged();
     }
 
 }

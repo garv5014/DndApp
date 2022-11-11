@@ -1,0 +1,29 @@
+﻿<div class="card col p-0">
+    <div class="card-header mb-2">
+        <h3>@Name</h3>
+    </div>
+    <div class="card-body  px-0">
+        <table class=" table mx-0 mb-0">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-success">Score</th>
+                    <th scope="col" class="text-warning">Modifier</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td> @Score </td>
+                    <td> @Mod </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+@code {
+    [Parameter]
+    public string Name { get; set; }
+    [Parameter]
+    public int Score { get; set; }
+    [Parameter]
+    public int Mod { get; set; }
+}
