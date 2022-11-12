@@ -15,9 +15,9 @@ namespace DndApp.Services
     {
         public HttpClient httpClient;
 
-        public JsonService(HttpClient context)
+        public JsonService()
         {
-            httpClient = context;
+            httpClient = new HttpClient();
         }
 
         public async Task<ApiClasses.Rootobject> ListItem(string url)
