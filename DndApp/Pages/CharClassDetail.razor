@@ -2,20 +2,96 @@
 @using DndApp.Data;
 @using DndApp.Services;
 @inject JsonService jservice;
-<h3>CharClassDetail</h3>
+@if(myChar != null)
+{
+    <div class="row text-center"> 
+        <div class="col-2"> </div>
+        <div class="card col px-0">
+            <div class="card-header h1 px-0 mx-0">
+                Class
+            </div>
+                <div class="card-body h2 p-0 ">
+                    @myChar.name
+                </div>
+        </div>
+        <div class="card col px-0">
+            <div class="card-header h1 px-0 mx-0">
+                Hit Die
+            </div>
+            <div class="card-body h2 p-0">
+                @myChar.hit_die
+            </div>
+        </div>
+        <div class="col-2"> </div>
+    </div>
+    @if (myChar.proficiency_choices.Any() && myChar.name != "Monk")
+    {
+        @foreach (var choice in myChar.proficiency_choices)
+        {
+            <h3 class="text-center">@choice.desc</h3>
+            <div class="row text-center">
+                @foreach (var opt in choice.from.options)
+                {
+                    <div class="card col-3">
+                        <div class="card-body h4">
+                            @opt.item.name
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    }
+    @if (myChar.proficiencies.Any())
+    {
+        <h3 class="text-center">Proficiencies</h3>
+        <div class="row text-center">
+            @foreach (var opt in myChar.proficiencies)
+            {
+                <div class="card col-3">
+                    <div class="card-body h4">
+                        @opt.name
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    @if (myChar.starting_equipment_options != null)
+    {
+        @foreach (var choice in myChar.starting_equipment_options)
+        {
+            if (choice.desc != "holy symbol" && choice.desc != "(a) a component pouch or (b) an arcane focus" && choice.desc != "(a) a scholar’s pack or (b) a dungeoneer’s pack")
+            {
+
+                <h3 class="text-center">@choice.desc</h3>
+                <div class="row text-center">
+                    @if (choice.from.options != null)
+                    {
+                        @foreach (var opt in choice.from.options)
+                        {
+                            @if (opt.of != null)
+                            {
+                                <div class="card col-3">
+                                    <div class="card-body h4">
+                                        @opt.of.name
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+            }
+        }
+    }
+}
 
 @code {
     [Parameter]
     public string classindex { get; set; }
 
-
-    [Inject]
-    public HttpClient httpClient { get; set; }
-
-    public CharacterClass.Rootobject mySpell { get; set; }
+    public CharacterClass.Rootobject myChar { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        mySpell = await jservice.CharClass(classindex);
+        myChar = await jservice.CharClass(classindex);
     }
 }
