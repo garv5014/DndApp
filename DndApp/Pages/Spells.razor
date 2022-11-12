@@ -4,21 +4,25 @@
 @using DndApp.Data;
 @using DndApp.Services;
 @inject JsonService jservice;
+<div class="text-center"> 
 
-<h3>Spells</h3>
-@if(mySpells != null)
-{
-    @foreach (var spell in mySpells)
+    <h1>Spells</h1>
+    @if (mySpells != null)
     {
-
-        <a href="/spell/@spell.index">
-            <p>@spell.name</p>
-        </a> 
+        <div class="row"> 
+        @foreach (var spell in mySpells)
+        {
+            <div class="card col-md-4 col-lg-3">
+                <a href="/spell/@spell.index" class=" nav-link p-0 m-0 ">
+                    <div class="card-body">
+                        <p class=" h3 text-black">@spell.name</p>
+                    </div>
+                </a>
+            </div>
+        }
+        </div>
     }
-
-}
-
-
+</div>
 @code {
     [Inject]
     public HttpClient httpClient { get; set; }

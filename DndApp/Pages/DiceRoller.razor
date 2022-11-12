@@ -4,64 +4,82 @@
 @using System.Threading;
 @using System.Globalization;
 <h3>Dice Roller</h3>
-
+<EditForm Model="dieForm" OnValidSubmit="DiceRoll">
+<ValidationSummary/>
+<DataAnnotationsValidator />
 <div class="col-lg-2 col-md-6  align-self-center">
                 <label class="form-label p-0">Number of sides on the die</label>
-            </div>
-                <div class="col-lg-2 col-md-6">
-                <InputNumber class="form-control" @bind-Value="DieSides" />
-            </div>
+</div>
+<div class="col-lg-2 col-md-6">
+    <InputNumber class="form-control" @bind-Value="dieForm.DieSides" />
+</div>
 
-            <div class="col-lg-2 col-md-6  align-self-center">
-                <label class="form-label p-0">Number of dice</label>
-            </div>
-                <div class="col-lg-2 col-md-6">
-                <InputNumber class="form-control" @bind-Value="DieCount" />
-            </div>
-            <div class="row">
-            <div class="col-sm-4 text-sm-end align-self-center">
-            </div>
-            <div class="col-8">
-                <button type="submit" class="btn btn-outline-primary" @onclick="(e => DiceRoll(DieSides, DieCount))">Roll</button>
-            </div>
-        </div>
+<div class="col-lg-2 col-md-6  align-self-center">
+    <label class="form-label p-0">Number of dice</label>
+</div>
+    <div class="col-lg-2 col-md-6">
+    <InputNumber class="form-control" @bind-Value="dieForm.DieCount" />
+</div>
+<div class="row">
+    <div class="col-sm-4 text-sm-end align-self-center">
+    </div>
+    <div class="col-8">
+        <button type="submit" class="btn btn-outline-primary">Roll</button>
+    </div>
+</div>
+</EditForm>
+
 
 @if(RollResults != null)
 {
-    <table>
-        <tr>
-            @foreach(int roll in RollResults)
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Roll</th>
+                <th scope="col">Result</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(int i = 0; i< RollResults.Count; i++)
             {
-                <td class="card col-sm-3 m-2" style="width: 16rem;">
-                    @roll
-                </td>
+                <tr>
+                    <th scope="row">@(i+1)</th>
+                    <td>@RollResults[i]</td>
+                </tr>
             }
-        </tr>
+           
+        </tbody>
     </table>
 }
 @code {
-   
-    [Required, Range(1, 500)]
-    [Parameter]
-    public int DieSides { get; set; }
-    [Required, Range(1, 500)]
-    [Parameter]
-    public int DieCount { get; set; }
+    public int rollCounter = 0;
+    public DieForm dieForm { get; set; } = new();
+    public class DieForm
+    {
+        [Required, Range(1, 500)]
+        [Parameter]
+        public int DieSides { get; set; }
+        [Required, Range(1, 500)]
+        [Parameter]
+        public int DieCount { get; set; }
+        public int rollCounter { get; set; }
+    }
 
     public long Ticks { get; set; }
 
     public DateTime Here { get; set; }
     Random instance;
 
-    int roll;
 
-    public List<int> RollResults = new List<int>();
+    public List<int> RollResults = new();
 
     Random rnd1 = new Random();
-    public void DiceRoll(int sides, int count)
+    public void DiceRoll()
     {
+        int roll;
+        rollCounter = 0;
         RollResults.Clear();
-        for(int i=0; i < count; i++)
+        for(int i=0; i < dieForm.DieCount; i++)
         {
             Here = DateTime.Now;
             Ticks = Here.Ticks;
@@ -69,7 +87,7 @@
                 Ticks *= -1;   
             }
             instance = new Random((int)Ticks);
-            roll = instance.Next(sides) + 1;
+            roll = instance.Next(dieForm.DieSides) + 1;
             RollResults.Add(roll);
             Thread.Sleep(50);
         }

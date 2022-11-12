@@ -2,18 +2,26 @@
 @using DndApp.Data
 @using DndApp.Services
 @inject JsonService jservice;
-<h3>CharClass</h3>
+<div class="text-center"> 
+
+<h1>CharClass</h1>
 @if (myClasses != null)
 {
+    <div class="row">
     @foreach (var Class in myClasses)
     {
-
-        <a href="/classes/@Class.index">
-            <p>@Class.name</p>
-        </a>
+        <div class="card col-md-4 col-lg-2">
+            <a href="/classes/@Class.index" class=" nav-link p-0 m-0 ">
+                <div class="card-body">
+                    <p class=" h3 text-black">@Class.name</p>
+                </div>
+            </a>
+        </div>
     }
+    </div>
 
 }
+</div>
 
 @code {
     [Inject]

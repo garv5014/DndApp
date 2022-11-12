@@ -11,10 +11,13 @@
 <p>Name: @mySpell.name</p>
 <p>Description: @mySpell.desc[0]</p>
 <p>Range: @mySpell.range</p>
-<p>Components:</p>
+<div class="row">
+
+<p class="col-lg-1" >Components:</p>
 @foreach(string comp in mySpell.components){
-    <p>@comp</p>
+    <div class="col-lg-1"> @comp</div>
 }
+</div>
     @if (mySpell.higher_level.Length != 0)
     {
         <p>Effects at higher levels:</p>
@@ -34,7 +37,7 @@
     {
         <p>Attack Type: @mySpell.attack_type</p>
     }
-    if (mySpell.damage != null && mySpell.damage.damage_at_slot_level != null)
+    if (mySpell.damage.damage_at_slot_level != null && mySpell.damage.damage_at_slot_level != null)
     {
         <p>Damage Type: @mySpell.damage.damage_type.name</p<!--Add code to link this to the damage type page?-->
         <p>Damage at levels:</p>
