@@ -2,6 +2,7 @@
 @using DndApp.Components;
 @using DndApp.Services;
 @inject JsonService jservice;
+@if(cStats != null){
 <div class="row">
     <h1 class="col text-center">@cStats.Name The @cStats.Class.ToUpper() </h1>
 </div>
@@ -49,10 +50,12 @@
     <StatCard Name="Constitution" Mod="cStats.constitution_Mod" Score="cStats.Constitution" />
     <StatCard Name="Charisma" Mod="cStats.charisma_Mod" Score="cStats.Charisma" />
 </div>
-
+}
 @code {
+
     [Parameter]
     public UserCharacterInfo? characterInfo { get; set; }
+    
     public CharacterStats cStats { get; set; }
     protected override async Task OnInitializedAsync()
     {
