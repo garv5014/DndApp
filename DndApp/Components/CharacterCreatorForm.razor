@@ -131,22 +131,25 @@ else if (UciSubmit != null)
     public DNDDbContext ctx { get; set; }
 
     public bool CharacterMade { get; set; } = false;
-    public ApiClasses.Result[] Classes { get; set; }
+    public ApiClasses.Result[] Classes { get; set; } 
     public ApiClasses.Result[] Races { get; set; }
     public UserCharacterInfo UciEdit = new();
     public UserCharacterInfo UciSubmit = new();
-    public ApiClasses.Rootobject myJson { get; set; }
+    public ApiClasses.Rootobject myJsonC { get; set; }
+    public ApiClasses.Rootobject myJsonR { get; set; }
     [Inject]
     public HttpClient http { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        myJson = await JsonSerializer.DeserializeAsync<ApiClasses.Rootobject>
+        myJsonC = await JsonSerializer.DeserializeAsync<ApiClasses.Rootobject>
         (await http.GetStreamAsync($"https://www.dnd5eapi.co/api/classes"));
-        Classes = myJson.results;
-        myJson = await JsonSerializer.DeserializeAsync<ApiClasses.Rootobject>
+        Classes = myJsonC.results;
+        UciEdit.Class = Classes[0].index;
+        myJsonR = await JsonSerializer.DeserializeAsync<ApiClasses.Rootobject>
         (await http.GetStreamAsync($"https://www.dnd5eapi.co/api/races"));
-        Races = myJson.results;
+        Races = myJsonR.results;
+        UciEdit.Race = Races[0].index;
         ctx = await contextFactory.CreateDbContextAsync();
     }
 

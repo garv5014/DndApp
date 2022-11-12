@@ -36,7 +36,7 @@
 
 @code {
     public DNDDbContext ctx { get; set; }
-    public List<UserCharacterInfo> Characters { get; set; }
+    public List<UserCharacterInfo> Characters { get; set; } = new();
     public UserCharacterInfo DisplayedCharacter { get; set; }
     public bool ShowCharacter { get; set; }
 
